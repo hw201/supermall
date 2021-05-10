@@ -43,7 +43,7 @@ export default {
   methods: {
     btn() {
       //每个item和路由对应起来
-      this.$router.push(this.path).catch((err) => err);
+      this.$router.push(this.path);
     },
   },
 };
