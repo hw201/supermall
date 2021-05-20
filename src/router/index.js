@@ -6,6 +6,7 @@ const Home = () => import('../views/home/Home.vue')
 const Classify = () => import('../views/classify/Classify.vue')
 const Car = () => import('../views/car/Car.vue')
 const Profile = () => import('../views/profile/Profile.vue')
+const Detail = () => import('../views/detail/Detail.vue')
 const routes = [
   {
     path: '',
@@ -28,7 +29,10 @@ const routes = [
     path: '/profile',
     component: Profile
   },
-
+  {
+    path: '/detail/:getImageById',
+    component: Detail
+  },
 ]
 
 const router = new VueRouter({

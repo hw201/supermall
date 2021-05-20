@@ -1,0 +1,18 @@
+[0518/145518:INFO:http_cache_transaction.cc(72)] IgnoreZeroCacheError: 0
+[0518/145746:WARNING:mediasession.cc(353)] Duplicate id found. Reassigning from 101 to 127
+[0518/145747:WARNING:p2ptransportchannel.cc(415)] Jingle:Port[0EA72F90:data:1:0:local:Net[any:0.0.0.x/0:Unknown]]: SetOption(5, 0) failed: 0
+[0518/145747:WARNING:p2ptransportchannel.cc(415)] Jingle:Port[0EA73420:data:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Unknown]]: SetOption(5, 0) failed: 0
+[0518/145747:WARNING:p2ptransportchannel.cc(415)] Jingle:Port[0EA74AF0:data:2:0:local:Net[any:0.0.0.x/0:Unknown]]: SetOption(5, 0) failed: 0
+[0518/145747:WARNING:p2ptransportchannel.cc(415)] Jingle:Port[0EA731D8:data:2:0:local:Net[any:0:0:0:x:x:x:x:x/0:Unknown]]: SetOption(5, 0) failed: 0
+[0518/145747:ERROR:socket_dispatcher_host.cc(88)] Failed to resolve address for stun.services.mozilla.com., errorcode: -105
+[0518/145747:ERROR:socket_dispatcher_host.cc(88)] Failed to resolve address for stun.services.mozilla.com., errorcode: -105
+[0518/145747:ERROR:socket_dispatcher_host.cc(88)] Failed to resolve address for stun.services.mozilla.com., errorcode: -105
+[0518/145747:ERROR:socket_dispatcher_host.cc(88)] Failed to resolve address for stun.services.mozilla.com., errorcode: -105
+[0518/145747:WARNING:stunport.cc(385)] Jingle:Port[0E388E00:data:1:0:local:Net[any:0.0.0.x/0:Unknown]]: StunPort: stun host lookup received error -1
+[0518/145747:WARNING:stunport.cc(385)] Jingle:Port[0E3890A8:data:1:0:local:Net[any:0:0:0:x:x:x:x:x/0:Unknown]]: StunPort: stun host lookup received error -1
+[0518/145747:WARNING:stunport.cc(385)] Jingle:Port[0E389350:data:2:0:local:Net[any:0.0.0.x/0:Unknown]]: StunPort: stun host lookup received error -1
+[0518/145747:WARNING:stunport.cc(385)] Jingle:Port[0E95E978:data:2:0:local:Net[any:0:0:0:x:x:x:x:x/0:Unknown]]: StunPort: stun host lookup received error -1
+[0518/145850:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank
+[0518/214540:WARNING:webmediaplayer_impl.cc(341)] Using MultibufferDataSource
+[0518/214552:ERROR:ffmpeg_demuxer.cc(1510)] media::FFmpegDemuxer::OnReadFrameDone result=-541478725 IsMaxMemoryUsageReached=0
+[0518/214614:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank

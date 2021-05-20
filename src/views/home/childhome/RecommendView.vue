@@ -27,13 +27,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .recommend {
   display: flex;
 
   width: 100%;
   padding: 10px 0px 20px;
-  border-bottom: 5px solid #eee;
+  border-bottom: 10px solid #eee;
 }
 .recommend-view {
   flex: 1;

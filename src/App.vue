@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive exclude="Detail"
+      ><!--  为了详情不让它重复数据exclude="Detail" -->
+      <router-view />
+    </keep-alive>
     <main-tab-bar />
   </div>
 </template>

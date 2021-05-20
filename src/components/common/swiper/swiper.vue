@@ -45,13 +45,13 @@ export default {
       let swiperEle = document.querySelector(".swiper");
       let slideEles = document.getElementsByClassName("slide");
       this.slideCount = slideEles.length;
-      console.log(this.slideCount);
+      //console.log(this.slideCount);
       if (this.slideCount > 1) {
         let cloneFirst = slideEles[0].cloneNode(true);
         let cloneLast = slideEles[this.slideCount - 1].cloneNode(true);
         swiperEle.insertBefore(cloneLast, slideEles[0]);
         swiperEle.appendChild(cloneFirst);
-        console.log(slideEles);
+        //console.log(slideEles);
         this.imgWidth = swiperEle.offsetWidth;
         this.swiperStyle = swiperEle.style;
       }
@@ -138,7 +138,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
   margin: 0px;
   padding: 0px;
