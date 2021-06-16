@@ -1,9 +1,10 @@
+
 import { request, request1 } from "./request";
 
 
 export function gethomedata() {
-  return request({
-    url: '/home/multidata'/* 请求接口 */
+  return request({/* request返回的是promise */
+    url: '/home/multidata'/* 请求接口，包含了轮播图、还有下面的数据 */
   })
 }
 
@@ -15,7 +16,9 @@ export function gethomegoods(type, pageIndex, pageSize) {/* 传参数 */
       type,
       pageIndex,
       pageSize
+
     }
   })
 }
+
 

@@ -30,7 +30,7 @@ const routes = [
     component: Profile
   },
   {
-    path: '/detail/:getImageById',
+    path: '/getImageById/:id',
     component: Detail
   },
 ]

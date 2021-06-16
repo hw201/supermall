@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="detailbtn">
     <img
-      :src="goodsItem.url"
+      v-lazy="goodsItem.url"
       @load="imgLoad"
     /><!-- 后台找到相对应的数据返回 -->
     <div class="goods-info">
@@ -23,9 +23,22 @@ export default {
       },
     },
   },
+  computed: {
+    //共用组件，有哪个就执行哪个
+    showImage() {
+      return this.goodsItem.url || this.goodsItem.details;
+    },
+  },
   methods: {
     imgLoad() {
+      /* 事件总线，把itemimgLoad直接传出home */
       this.$bus.$emit("itemimgLoad");
+      // 可以使用这种方法取消主页监听
+      // if(this.$route.path.indexOf('/home')){
+      //    this.$bus.$emit("homeitemimgLoad");
+      // }else if(this.$route.path.indexOf('/detail')){
+      //   this.$bus.$emit("detailitemimgLoad");
+      // }
     },
     detailbtn() {
       //console.log("点击详情页");

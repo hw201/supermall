@@ -133,7 +133,7 @@ export default {
     setTimeout(() => {
       this.handleDom();
       this.startTimer();
-    }, 200);
+    }, 100);
   },
 };
 </script>

@@ -12,9 +12,9 @@
       class="content"
       ref="scroll"
       :probe-type="3"
-      @scroll="topclick"
+      @scroll="contentscroll"
       :pull-up-load="true"
-      @pulling-up="loadMore"
+      @pullingUp="loadMore"
       ><!--Scroll发出的事件@scroll  -->
       <home-swiper
         :banners="banners"
@@ -29,6 +29,7 @@
       /><!--@goodsclick子组件发出的事件  -->
       <goods-list :goods="showgoods" />
       <!-- <goods-list :goods="goods[defaultindex].list" /> -->
+      <!-- 从goods[type].list取出数据给子组件goods -->
     </scroll>
     <!-- 组件点击事件加.native -->
     <back-top @click.native="backclick" v-show="isShow" /><!-- 回到顶部 -->
@@ -45,6 +46,7 @@ import BackTop from "@/components/content/backtop/BackTop";
 
 import { gethomedata, gethomegoods } from "@/network/home";
 import { debounce } from "@/common/utils";
+import { itemListenerMixin } from "@/common/mixin";
 
 import TabbarNav from "@/components/content/TabbarNav/TabbarNav.vue";
 import goodsList from "@/components/content/goodsItem/goodsList.vue";
@@ -61,15 +63,17 @@ export default {
     Scroll,
     BackTop,
   },
+  /* 混入mounted */
+  mixins: [itemListenerMixin],
   data() {
     return {
       banners: [] /* 这个是轮播图的数据跟点击图片的数据 */,
       recommends: [] /* 这个是第二栏圆圈那里的数据 */,
       goods: {
         //保存数据
-        1: { pageIndex: 0, list: [] } /* pop */,
-        2: { pageIndex: 0, list: [] } /* new */,
-        3: { pageIndex: 0, list: [] } /* sell */,
+        1: { pageIndex: 0, list: [], pageSize: 0 } /* pop */,
+        2: { pageIndex: 0, list: [], pageSize: 0 } /* new */,
+        3: { pageIndex: 0, list: [], pageSize: 0 } /* sell */,
       },
 
       defaultindex: "1" /* 默认显示数据goods的1 */,
@@ -77,6 +81,7 @@ export default {
       tabOffsetTop: 0 /* 633 */,
       isTabFixed: false,
       saveY: 0,
+      // itemImgListener: null,
     };
   },
   computed: {
@@ -84,15 +89,21 @@ export default {
       return this.goods[this.defaultindex].list;
     },
   },
+  destroyed() {
+    consloe.log("销毁");
+  },
   activated() {
     //活动状态，使用了keeplive这个标签采用这两个函数
     this.$refs.scroll.scrollTo(0, this.saveY, 0);
     this.$refs.scroll.refresh(); //重新刷新一次
   },
   deactivated() {
-    //没活动状态
+    //没活动状态，离开时保持Y值
     this.saveY = this.$refs.scroll.getsaveY();
     //this.$refs.scroll.refresh();
+
+    //取消全局事件监听
+    this.$bus.$off("itemimgLoad", this.itemImgListener);
   },
 
   created() {
@@ -104,16 +115,16 @@ export default {
     this.gethomegoods("3");
   },
   mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 500);
-    this.$bus.$on("itemimgLoad", () => {
-      refresh(); /* 上面的变量 */
-
-      /* 监听图片加载完 */
-      // this.$refs.scroll && this.$refs.scroll.refresh(); /* 重新计算滚动区域 */
-    });
-
-    /* $el获取组件元素 */
-    //this.tabOffsetTop = this.$refs.TabbarNav2.$el.offsetTop;
+    // /* debounce防抖 ，这里做了一层封装的在utils.js文件里*/
+    // const refresh = debounce(this.$refs.scroll.refresh, 100);
+    // this.itemImgListener = () => {
+    //   refresh(); /* 上面的变量 */
+    // };
+    // this.$bus.$on("itemimgLoad", this.itemImgListener);
+    // /* 监听图片加载完 */
+    // // this.$refs.scroll && this.$refs.scroll.refresh(); /* 重新计算滚动区域 */
+    // /* $el获取组件元素 */
+    // //this.tabOffsetTop = this.$refs.TabbarNav2.$el.offsetTop;
   },
   methods: {
     /* 点击按钮相关事件 */
@@ -139,14 +150,18 @@ export default {
       this.$refs.scroll.scrollTo(0, 0);
       /*scrollTo把内容滚动到指定位置，另外一个方法注释的那里x=0，y=0 */
     },
-    topclick(position) {
+    contentscroll(position) {
       //console.log(position);/* 打印的时候是负值 */
-      this.isShow = -position.y > 1000; /* 大于600就为true显示 */
+      this.isShow = -position.y > 1000; /* 大于1000就为true显示 */
       //console.log(-position.y);
       this.isTabFixed = -position.y > this.tabOffsetTop; //大于就吸顶
     },
+    /* 点击谁就给谁上拉加载更多 */
     loadMore() {
-      this.gethomegoods(this.defaultindex);
+      this.gethomegoods(this.defaultindex); /* @load监听图片加载完 */
+      //console.log("加载更多");
+      // this.scroll && this.$refs.scroll.finishPullUp();
+      // this.$refs.scroll.refresh(); /* 调用方法，进行更新，重新计算高度  */
     },
     swiperImgLoad() {
       //console.log(this.$refs.TabbarNav2.$el.offsetTop);
@@ -160,21 +175,24 @@ export default {
         /* 这个是网络请求的gethomedata */
         //res返回的数据结果this.result=res
         //res.data.banner.list;这些从后台一步一步提取出来的数据
-        this.banners = res.data.banner.list;
+        this.banners = res.data.banner.list; /* 这里去到结果就直接传 */
         this.recommends = res.data.recommend.list;
       });
     },
     gethomegoods(type) {
       const page = this.goods[type].pageIndex + 1; //获取页码
+      const pageSize = this.goods[type].pageSize + 10;
       // 在此处执行你要执行的函数
-      gethomegoods(type, page, 6).then((res) => {
-        //console.log(res);
-        this.goods[type].list.push(...res); //把结果添加到goods[type]里面去（...意思不止传一个）
-        this.goods[type].pageIndex += 1; /* 页数也跟着加 */
-        console.log(this);
-
-        //完成加载更多
-        this.$refs.scroll || this.$refs.scroll.finishPullUp();
+      gethomegoods(type, page, pageSize).then((res) => {
+        // console.log(res);
+        this.goods[type].list.push(...res); //把结果添加到goods[type]的list里面去（...意思不止传一个）/* 数组传数组就用push */
+        /*this.goods[type].pageIndex =this.goods[type].pageIndex + 1 页数也跟着加 */
+        this.goods[type].pageIndex += 1;
+        /*  this.goods[type].pageSize = this.goods[type].pageSize + 0 */
+        this.goods[type].pageSize += 0;
+        //完成加载更多,调用这个方法才能进行下一次加载更多
+        this.$refs.scroll.finishPullUp();
+        // this.scroll && this.$refs.scroll.refresh();
       });
     },
   },
@@ -213,7 +231,7 @@ export default {
   z-index: 9; // 如果导航栏被挡住了可以用这个设置固定 
 } */
 .content {
-  /*height: calc(100vh - 93px);  //滚动屏幕的高度减去标题栏44px 底部栏49px  */
+  height: calc(100vh - 93px); /*  //滚动屏幕的高度减去标题栏44px 底部栏49px */
   overflow: hidden;
   position: absolute;
   top: 44px;

@@ -22,6 +22,7 @@
 <script>
 import NavBar from "../../../components/common/navbar/NavBar.vue";
 export default {
+  name: "detailnavbar",
   components: { NavBar },
   data() {
     return {
@@ -32,6 +33,7 @@ export default {
   methods: {
     titlesclick(index) {
       this.currindex = index;
+      this.$emit("titleClick", index); /* 详情页内部发生点击 */
     },
     backbtn() {
       //history.back();

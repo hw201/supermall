@@ -30,8 +30,8 @@ export default {
     this.scroll = new BScroll(this.$refs.wrapper, {
       /* 获取当前dom的wrapper */
       click: true /* 这样才可以点击里面的事件 */,
-      probeType: this
-        .probeType /* 0 1 2 3 不能写死，不是每个页面都用，用在调用一下 */,
+      /* 0 1 2 3 不能写死，不是每个页面都用，用在调用一下 */
+      probeType: this.probeType,
       pullUpLoad: this.pullUpLoad /* true/false 哪个页面用就调用 */,
     });
     if (this.probeType === 2 || this.probeType === 3) {
@@ -41,8 +41,11 @@ export default {
     }
 
     if (this.pullUpLoad) {
-      this.scroll.on("pulingUp", () => {
-        this.$emit("pulingUp");
+      /* 当为ture才监听 */
+      this.scroll.on("pullingUp", () => {
+        // console.log("----");
+        /* 首页做这个事件，所以发射出去 */
+        this.$emit("pullingUp");
       });
     }
   },
@@ -50,14 +53,15 @@ export default {
     scrollTo(x, y, time = 300) {
       this.scroll && this.scroll.scrollTo(x, y, time);
     },
-
+    finishPullUp() {
+      /* scroll默认只加载一次 */
+      this.scroll || this.scroll.finishPullUp();
+    },
     refresh() {
       //console.log("---");
       this.scroll && this.scroll.refresh();
     },
-    finishPullUp() {
-      this.scroll || this.scroll.finishPullUp();
-    },
+
     getsaveY() {
       return this.scroll ? this.scroll.y : 0;
     },

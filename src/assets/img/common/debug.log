@@ -16,3 +16,8 @@
 [0518/214540:WARNING:webmediaplayer_impl.cc(341)] Using MultibufferDataSource
 [0518/214552:ERROR:ffmpeg_demuxer.cc(1510)] media::FFmpegDemuxer::OnReadFrameDone result=-541478725 IsMaxMemoryUsageReached=0
 [0518/214614:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank
+[0604/230509:WARNING:dns_config_service_win.cc(674)] Failed to read DnsConfig.
+[0604/230618:WARNING:dns_config_service_win.cc(674)] Failed to read DnsConfig.
+[0604/232501:WARNING:dns_config_service_win.cc(674)] Failed to read DnsConfig.
+[0608/190633:WARNING:url_request_job_manager.cc(89)] Failed to map: weixin://resourceid/blank
+[0609/143021:WARNING:dns_config_service_win.cc(674)] Failed to read DnsConfig.
