@@ -11,7 +11,6 @@ export default {
   props: {
     //App的path="/home"
     path: String,
-
     activeColor: {
       type: String,
       default: "red",
